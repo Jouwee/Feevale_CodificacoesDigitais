@@ -1,0 +1,21 @@
+<web-app id="simple" version="2.4">
+    <welcome-file-list>
+        <welcome-file>histogram</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>Histogram</servlet-name>
+        <servlet-class>app.Histogram</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Query</servlet-name>
+        <servlet-class>app.Query</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Histogram</servlet-name>
+        <url-pattern>/histogram</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Query</servlet-name>
+        <url-pattern>/query</url-pattern>
+    </servlet-mapping>
+</web-app>
