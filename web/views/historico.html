@@ -1,6 +1,23 @@
-<div class="col-sm-12">
-    <app-chart data="incidenciaErros" title="Timeline de incidentes" x-axis="eixo X" y-axis="y eixo" notes="asdoikqokwleqwk"></app-chart>
+<div class="row">
+    <div class="col-sm-3">
+        <app-dashboard-cell title="Configuração de visão" notes="Utilize as configurações acima para alterar a visão de dados">
+            <center>
+                <h1><a>{{periodoExtenso}}</a></h1>
+                <datepicker ng-model="periodo" show-weeks="true" class="well well-sm" min-mode="month" datepicker-mode="'month'"></datepicker>
+            </center>
+        </app-dashboard-cell>
+    </div>
+    <div class="col-sm-9">
+        <app-chart data="incidenciaErros" type="column" title="Timeline de incidentes" x-axis="eixo X" y-axis="Número de incidêntes" notes="Número de incidentes por mês classificados por tipo desde 2012"></app-chart>
+    </div>
 </div>
-<div class="col-sm-12">
-    <app-chart data="relacaoRevisao" title="Timeline de incidentes" x-axis="eixo X" y-axis="y eixo" notes="asdoikqokwleqwk"></app-chart>
+<div class="row">
+    <div class="col-sm-3">
+        <app-chart data="classificacaoIncidentes" type="gauge" title="Tipos de incidentes" x-axis="eixo X" y-axis="y eixo" notes="Tipos de incidentes"></app-chart>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <app-chart data="relacaoRevisao" title="Timeline de incidentes" x-axis="eixo X" y-axis="y eixo" notes="asdoikqokwleqwk"></app-chart>
+    </div>
 </div>

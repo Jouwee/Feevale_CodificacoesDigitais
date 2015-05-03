@@ -1,4 +1,4 @@
-var feevaleApp = angular.module('feevaleApp', ['ngRoute']);
+var feevaleApp = angular.module('feevaleApp', ['ngRoute', 'ui.bootstrap']);
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 // Rotas
@@ -24,11 +24,22 @@ feevaleApp.directive('appNavbar', function() {
     return {
         templateUrl: 'tpl/appNavbar.html'
     };
+}).directive('appDashboardCell', function() {
+    return {
+        scope: {
+            title: '@',
+            notes: '@',
+        },
+        transclude: true,
+        replace: true,
+        templateUrl: 'tpl/appDashboardCell.html'
+    };
 }).directive('appChart', function() {
     var chartId = 1;
     return {
         scope: {
             data: '=',
+            type: '@',
             title: '@',
             xAxis: '@',
             yAxis: '@',
@@ -38,7 +49,7 @@ feevaleApp.directive('appNavbar', function() {
             $scope.chartId = chartId++;
         },
         controller: function($scope) {
-            $scope.$watch('data', function(newValue, oldValue) {
+           $scope.$watch('data', function(newValue, oldValue) {
                 var modelHash = {};
                 for(var i in $scope.data) {
                     var model = $scope.data[i][0];
@@ -65,10 +76,7 @@ feevaleApp.directive('appNavbar', function() {
                         theSeries.push(modelHash[i].seriesHash[j]);
                     }
                 }
-                $('div#chart' + $scope.chartId).highcharts({
-                    chart: {
-                        type: 'column'
-                    },
+                var options = {
                     title: {
                         text: '',
                         style: 'display : none'
@@ -90,7 +98,39 @@ feevaleApp.directive('appNavbar', function() {
                         }
                     },
                     series: theSeries
-                });
+                };
+                if ($scope.type === 'column') {
+                    $.extend( options, {
+                        chart: {
+                            type: 'column'
+                        }
+                    });
+                }
+                if ($scope.type === 'gauge') {
+                    $.extend( options, {
+                        chart: {
+                            type: 'pie'
+                        },
+                        plotOptions: {
+                            pie: {
+                                innerSize: '50%',
+                                dataLabels: {
+                                    enabled: true,
+                                    distance: -25,
+                                    style: {
+                                        fontWeight: 'bold',
+                                        color: 'white',
+                                        textShadow: '0px 1px 2px black'
+                                    }
+                                },
+                                startAngle: -90,
+                                endAngle: 90,
+                                center: ['50%', '75%']
+                            }
+                        },
+                    });
+                }
+                $('div#chart' + $scope.chartId).highcharts(options);
             });
         },
         templateUrl: 'tpl/appChart.html'
@@ -103,8 +143,8 @@ feevaleApp.directive('appNavbar', function() {
 feevaleApp.factory('$dataProvider', function($http) {
     var dataProviderService = {};
     //  Lê uma view
-    dataProviderService.readView = function(viewName, onSuccess) {
-        $http.get('data?view='+viewName).success(function(data) {
+    dataProviderService.readView = function(viewName, where, onSuccess) {
+        $http.get('data?view='+viewName+'&where='+where).success(function(data) {
             onSuccess(data);
         });
     };
