@@ -1,5 +1,5 @@
 feevaleApp.controller('historicoCtrl', function ($scope, $dataProvider) {
-    $scope.$watch('periodo', function(newValue, oldValue) {
+    $scope.$watch(function() {return $scope.periodo}, function(newValue, oldValue) {
         var monthNames = [
                 "Janeiro", "Fevereiro", "Março",
                 "Abril", "Maio", "Junho", "Julho",
@@ -14,10 +14,13 @@ feevaleApp.controller('historicoCtrl', function ($scope, $dataProvider) {
         $dataProvider.readView('V_CHART_CLASSIF_INCIDENTES', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
             $scope.classificacaoIncidentes = data;
         });
+        $dataProvider.readView('V_CHART_TOTAL_HORAS_IMPLEM', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
+            $scope.totalHorasImplementacao = data;
+        });
+        $dataProvider.readView('V_CHART_TOTAL_HORAS_INCID', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
+            $scope.totalHorasIncidentes = data;
+        });
     }, false);
-    
-    $scope.name = 'hoi';
-    $scope.name = 'hui';
     // Gráficos NÃO dependentes do período
     $dataProvider.readView('V_CHART_HISTORICO_INCIDENTES', undefined, function(data) {
         $scope.incidenciaErros = data;
@@ -26,7 +29,8 @@ feevaleApp.controller('historicoCtrl', function ($scope, $dataProvider) {
         $scope.relacaoRevisao = data;
     });
     // Inicializa o período
-    $scope.periodo = new Date();
+//    $scope.periodo = new Date();
+    $scope.periodo = new Date('2015-04');
 });
 
 function pad(num, size) {

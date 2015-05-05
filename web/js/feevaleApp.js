@@ -24,21 +24,13 @@ feevaleApp.directive('appNavbar', function() {
     return {
         templateUrl: 'tpl/appNavbar.html'
     };
-}).directive('appDashboardCell', function() {
-    return {
-        scope: {
-            title: '@',
-            notes: '@',
-        },
-        transclude: true,
-        replace: true,
-        templateUrl: 'tpl/appDashboardCell.html'
-    };
 }).directive('appChart', function() {
     var chartId = 1;
     return {
         scope: {
             data: '=',
+            min: '=',
+            max: '=',
             type: '@',
             title: '@',
             xAxis: '@',
@@ -116,18 +108,36 @@ feevaleApp.directive('appNavbar', function() {
                                 innerSize: '50%',
                                 dataLabels: {
                                     enabled: true,
-                                    distance: -25,
-                                    style: {
-                                        fontWeight: 'bold',
-                                        color: 'white',
-                                        textShadow: '0px 1px 2px black'
-                                    }
+                                    distance: 0,
                                 },
                                 startAngle: -90,
                                 endAngle: 90,
                                 center: ['50%', '75%']
                             }
                         },
+                    });
+                }
+                if ($scope.type === 'solidgauge') {
+                    $.extend( options, {
+                        chart: {
+                            type: 'solidgauge'
+                        },
+                        pane: {
+                            center: ['50%', '85%'],
+                            size: '140%',
+                            startAngle: -90,
+                            endAngle: 90,
+                            background: {
+                                /*backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
+                                innerRadius: '60%',
+                                outerRadius: '100%',*/
+                                shape: 'arc'
+                            }
+                        },
+                        yAxis: {
+                            min: $scope.min,
+                            max: $scope.max,
+                        }
                     });
                 }
                 $('div#chart' + $scope.chartId).highcharts(options);

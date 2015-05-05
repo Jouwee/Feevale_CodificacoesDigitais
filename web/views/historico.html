@@ -1,19 +1,36 @@
 <div class="row">
     <div class="col-sm-3">
-        <app-dashboard-cell title="Configuração de visão" notes="Utilize as configurações acima para alterar a visão de dados">
-            <center>
-                <h1><a>{{periodoExtenso}}</a></h1>
-                <datepicker ng-model="periodo" show-weeks="true" class="well well-sm" min-mode="month" datepicker-mode="'month'"></datepicker>
-            </center>
-        </app-dashboard-cell>
+        <div class="chart-wrapper">
+            <div class="chart-title">
+                Configuração de visão
+            </div>
+            <div class="chart-stage">
+                <center>
+                    <datepicker ng-model="periodo" show-weeks="true" class="well well-sm" min-mode="month" datepicker-mode="'month'"></datepicker>
+                    <br>
+                </center>
+            </div>
+            <div class="chart-notes">
+                Utilize as configurações acima para alterar a visão de dados
+            </div>
+        </div>
     </div>
     <div class="col-sm-9">
         <app-chart data="incidenciaErros" type="column" title="Timeline de incidentes" x-axis="eixo X" y-axis="Número de incidêntes" notes="Número de incidentes por mês classificados por tipo desde 2012"></app-chart>
     </div>
 </div>
+<div class="page-header">
+  <h1>{{periodoExtenso}} <small>Altere o perído acima</small></h1>
+</div>
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <app-chart data="classificacaoIncidentes" type="gauge" title="Tipos de incidentes" x-axis="eixo X" y-axis="y eixo" notes="Tipos de incidentes"></app-chart>
+    </div>
+    <div class="col-sm-4">
+        <app-chart data="totalHorasImplementacao" type="solidgauge" min="0" max="3000" title="Horas de implementação" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de implementação, saída especif. e infraestrutura"></app-chart>
+    </div>
+    <div class="col-sm-4">
+        <app-chart data="totalHorasIncidentes" type="solidgauge" min="0" max="3000" title="Horas de incidentes" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de incidêntes"></app-chart>
     </div>
 </div>
 <div class="row">

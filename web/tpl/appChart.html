@@ -1,3 +1,13 @@
-<app-dashboard-cell title="{{title}}" notes="{{notes}}">
-    <div class="chart" id="chart{{::chartId}}"></div>          
-</app-dashboard-cell>
+<div class="chart-wrapper">
+    <div class="chart-title">
+        {{title}}
+    </div>
+    <div class="chart-stage">
+        <div>
+            <div class="chart" id="chart{{::chartId}}"></div>          
+        </div>
+    </div>
+    <div class="chart-notes">
+        {{notes}}
+    </div>
+</div>
