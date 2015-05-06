@@ -32,6 +32,7 @@ public class Data extends HttpServlet implements Servlet {
             if (!request.getParameter("where").equals("undefined")) {
                 where = " WHERE " + request.getParameter("where");
             }
+            System.out.println("SELECT * FROM " + view + where);
             request.setAttribute("result", buildResultMap("SELECT * FROM " + view + where));
         } catch(Exception e) {
             e.printStackTrace();

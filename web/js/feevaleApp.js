@@ -59,7 +59,7 @@ feevaleApp.directive('appNavbar', function() {
                         seriesHash[series].name = series;
                         seriesHash[series].data = [];
                     }
-                    seriesHash[series].data.push({name: x, y:parseInt(y)});
+                    seriesHash[series].data.push({name: x, y:parseFloat(y)});
                 }
                 
                 var theSeries = [];

@@ -20,13 +20,20 @@ feevaleApp.controller('historicoCtrl', function ($scope, $dataProvider) {
         $dataProvider.readView('V_CHART_TOTAL_HORAS_INCID', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
             $scope.totalHorasIncidentes = data;
         });
+//        $dataProvider.readView('V_CHART_RELACAO_REVISAO', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
+        $dataProvider.readView('V_CHART_RELACAO_REVISAO', 'PERIODO > \'2014-09\' AND PERIODO < \'2015-01\'', function(data) {
+//        $dataProvider.readView('V_CHART_RELACAO_REVISAO', '', function(data) {
+            $scope.relacaoRevisao = data;
+        });
+//        $dataProvider.readView('V_CHART_RELACAO_REVISAO_INCID', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
+        $dataProvider.readView('V_CHART_RELACAO_REVISAO_INCID', 'PERIODO > \'2014-09\' AND PERIODO < \'2015-01\'', function(data) {
+//        $dataProvider.readView('V_CHART_RELACAO_REVISAO_INCID', undefined, function(data) {
+            $scope.relacaoRevisaoIncidentes = data;
+        });
     }, false);
     // Gráficos NÃO dependentes do período
     $dataProvider.readView('V_CHART_HISTORICO_INCIDENTES', undefined, function(data) {
         $scope.incidenciaErros = data;
-    });
-    $dataProvider.readView('V_CHART_RELACAO_REVISAO', undefined, function(data) {
-        $scope.relacaoRevisao = data;
     });
     // Inicializa o período
 //    $scope.periodo = new Date();
