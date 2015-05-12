@@ -23,17 +23,22 @@ public class Data extends HttpServlet implements Servlet {
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
-        String view = request.getParameter("view");
         try {
             if (connection == null) {
                 conectDatabase();
             }
-            String where = "";
-            if (!request.getParameter("where").equals("undefined")) {
-                where = " WHERE " + request.getParameter("where");
+            if (request.getParameter("query") != null) {
+                System.out.println(request.getParameter("query"));
+                request.setAttribute("result", buildResultMap(request.getParameter("query")));
             }
-            System.out.println("SELECT * FROM " + view + where);
-            request.setAttribute("result", buildResultMap("SELECT * FROM " + view + where));
+            if (request.getParameter("view") != null) {
+                String view = request.getParameter("view");
+                String where = "";
+                if (!request.getParameter("where").equals("undefined")) {
+                    where = " WHERE " + request.getParameter("where");
+                }
+                request.setAttribute("result", buildResultMap("SELECT * FROM " + view + where));
+            }
         } catch(Exception e) {
             e.printStackTrace();
             request.setAttribute("exception", e);
