@@ -7,14 +7,25 @@ feevaleApp.config(function($routeProvider) {
     $routeProvider
             // Página inicial
             .when('/', {
-                templateUrl: 'views/historico.html',
-                controller: 'historicoCtrl'
+                templateUrl: 'views/apresentacao.html',
+                controller: 'apresentacaoCtrl'
             })
-            // route for the about page
+            // Apresentação
+            .when('/apresentacao', {
+                templateUrl: 'views/apresentacao.html',
+                controller: 'apresentacaoCtrl'
+            })
+            // Histórico
             .when('/historico', {
                 templateUrl: 'views/historico.html',
                 controller: 'historicoCtrl'
-            });
+            })
+            // Projeção
+            .when('/projecao', {
+                templateUrl: 'views/projecao.html',
+                controller: 'projecaoCtrl'
+            })
+            ;
 });
 
 /* ------------------------------------------------------------------------------------------------------------------ */
@@ -154,7 +165,6 @@ feevaleApp.factory('$dataProvider', function($http) {
     var dataProviderService = {};
     //  Lê uma view
     dataProviderService.readView = function(viewName, where, onSuccess) {
-        console.log('data?view='+viewName+'&where='+where);
         $http.get('data?view='+viewName+'&where='+where).success(function(data) {
             onSuccess(data);
         });

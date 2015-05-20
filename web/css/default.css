@@ -1,3 +1,20 @@
 .chart {
     height: 250px;
 }
+
+.jumbotron {
+    font-size: 24pt;
+}
+
+.jumbotron p {
+    text-indent: 8%;
+    font-size: 24pt;
+}
+
+.jumbotron .glyphicon-chevron-up {
+    color: rgb(109, 194, 74);
+}
+
+.jumbotron .glyphicon-chevron-down {
+    color: rgb(216, 70, 70);
+}
