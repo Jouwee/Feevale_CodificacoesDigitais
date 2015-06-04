@@ -3,7 +3,7 @@ var feevaleApp = angular.module('feevaleApp', ['ngRoute', 'ui.bootstrap']);
 /* ------------------------------------------------------------------------------------------------------------------ */
 // Rotas
 /* ------------------------------------------------------------------------------------------------------------------ */
-feevaleApp.config(function($routeProvider) {
+feevaleApp.config(function ($routeProvider) {
     $routeProvider
             // Página inicial
             .when('/', {
@@ -25,17 +25,22 @@ feevaleApp.config(function($routeProvider) {
                 templateUrl: 'views/projecao.html',
                 controller: 'projecaoCtrl'
             })
+            // Projeção
+            .when('/simulacao', {
+                templateUrl: 'views/simulacao.html',
+                controller: 'simulacaoCtrl'
+            })
             ;
 });
 
 /* ------------------------------------------------------------------------------------------------------------------ */
 // Diretivas
 /* ------------------------------------------------------------------------------------------------------------------ */
-feevaleApp.directive('appNavbar', function() {
+feevaleApp.directive('appNavbar', function () {
     return {
         templateUrl: 'tpl/appNavbar.html'
     };
-}).directive('appChart', function() {
+}).directive('appChart', function () {
     var chartId = 1;
     return {
         scope: {
@@ -48,17 +53,15 @@ feevaleApp.directive('appNavbar', function() {
             yAxis: '@',
             notes: '@'
         },
-        link: function($scope) {
+        link: function ($scope) {
             $scope.chartId = chartId++;
-        },
-        controller: function($scope) {
-           $scope.$watch('data', function(newValue, oldValue) {
+            $scope.$watch('data', function (newValue, oldValue) {
                 var modelHash = {};
-                for(var i in $scope.data) {
+                for (var i in $scope.data) {
                     var model = $scope.data[i][0];
                     var series = $scope.data[i][1];
                     var x = $scope.data[i][2];
-                    var y= $scope.data[i][3];
+                    var y = $scope.data[i][3];
                     if (modelHash[model] === undefined) {
                         modelHash[model] = {};
                         modelHash[model].name = model;
@@ -70,12 +73,12 @@ feevaleApp.directive('appNavbar', function() {
                         seriesHash[series].name = series;
                         seriesHash[series].data = [];
                     }
-                    seriesHash[series].data.push({name: x, y:parseFloat(y)});
+                    seriesHash[series].data.push({name: x, y: parseFloat(y)});
                 }
-                
+
                 var theSeries = [];
-                for(var i in modelHash) {
-                    for(var j in modelHash[i].seriesHash) {
+                for (var i in modelHash) {
+                    for (var j in modelHash[i].seriesHash) {
                         theSeries.push(modelHash[i].seriesHash[j]);
                     }
                 }
@@ -103,14 +106,14 @@ feevaleApp.directive('appNavbar', function() {
                     series: theSeries
                 };
                 if ($scope.type === 'column') {
-                    $.extend( options, {
+                    $.extend(options, {
                         chart: {
                             type: 'column'
                         }
                     });
                 }
                 if ($scope.type === 'gauge') {
-                    $.extend( options, {
+                    $.extend(options, {
                         chart: {
                             type: 'pie'
                         },
@@ -129,7 +132,7 @@ feevaleApp.directive('appNavbar', function() {
                     });
                 }
                 if ($scope.type === 'solidgauge') {
-                    $.extend( options, {
+                    $.extend(options, {
                         chart: {
                             type: 'solidgauge'
                         },
@@ -140,8 +143,8 @@ feevaleApp.directive('appNavbar', function() {
                             endAngle: 90,
                             background: {
                                 /*backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                                innerRadius: '60%',
-                                outerRadius: '100%',*/
+                                 innerRadius: '60%',
+                                 outerRadius: '100%',*/
                                 shape: 'arc'
                             }
                         },
@@ -151,6 +154,7 @@ feevaleApp.directive('appNavbar', function() {
                         }
                     });
                 }
+                //console.log($('div#chart' + $scope.chartId));
                 $('div#chart' + $scope.chartId).highcharts(options);
             });
         },
@@ -161,19 +165,76 @@ feevaleApp.directive('appNavbar', function() {
 /* ------------------------------------------------------------------------------------------------------------------ */
 // Serviços
 /* ------------------------------------------------------------------------------------------------------------------ */
-feevaleApp.factory('$dataProvider', function($http) {
+feevaleApp.factory('$dataProvider', function ($http) {
     var dataProviderService = {};
     //  Lê uma view
-    dataProviderService.readView = function(viewName, where, onSuccess) {
-        $http.get('data?view='+viewName+'&where='+where).success(function(data) {
+    dataProviderService.readView = function (viewName, where, onSuccess) {
+        $http.get('data?view=' + viewName + '&where=' + where).success(function (data) {
             onSuccess(data);
         });
     };
     //  Lê um registro
-    dataProviderService.readRecord = function(select, onSuccess) {
-        $http.get('data?query='+select).success(function(data) {
+    dataProviderService.readRecord = function (select, onSuccess) {
+        $http.get('data?query=' + select).success(function (data) {
             onSuccess(data[0]);
         });
     };
     return dataProviderService;
+})
+
+// Gerador aleatório        
+.factory('$random', function () {
+    var random = {};
+    //  Lê uma view
+    random.getFunctionPoint = function (theFunction, x, deviation) {
+        var randomDeviation = (Math.random() * deviation);
+        return theFunction(x) * (1 - (deviation / 2) + randomDeviation);
+    };
+    return random;
+})
+
+// Gerador de dados do modelo
+.factory('$simulador', function ($random) {
+    var simulador = {};
+    // Gera
+    simulador.getTotalHoras = function (ano, mes) {
+        // O desvio padrão deveria ser 20%, mas 50% parece mais preciso
+        //var deviation = 0.2;
+        var deviation = 0.5;
+        var formula = function (x) {
+            return Math.floor(((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 2360);
+        };
+        return $random.getFunctionPoint(formula, mes, deviation);
+    };
+    // Gera
+    simulador.getCurvaTempoRevisaoFichas = function (pico) {
+        var curva = [];
+        var base = 10;
+        var valorPico = 70;
+        
+        pico = 7;
+        var soma = 0;
+        
+        var numeroItens = pico;
+        for (var i = 0; i < numeroItens; i++) {
+            curva[i] = (i + 1) / numeroItens;
+        }
+        
+        var numeroItens = 9 - pico;
+        for (var i = 0; i < numeroItens; i++) {
+            curva[(pico - i) + numeroItens - 1] = (i) / numeroItens;
+        }
+        
+        for(var i = 0; i < 10; i++) {
+            console.log(curva[i]);
+            soma += curva[i] == undefined ? 0 : curva[i];
+        }
+        console.log(soma);
+        for(var i = 0; i < 10; i++) {
+            curva[i] = curva[i] / soma;
+        }
+        return curva;
+    };
+    return simulador;
 });
+
