@@ -1,4 +1,5 @@
-feevaleApp.controller('historicoCtrl', function ($scope, $dataProvider) {
+feevaleApp.controller('historicoCtrl', function ($rootScope, $scope, $dataProvider) {
+    $rootScope.pagina = 'historico';
     $scope.$watch(function() {return $scope.periodo}, function(newValue, oldValue) {
         var monthNames = [
                 "Janeiro", "Fevereiro", "Março",

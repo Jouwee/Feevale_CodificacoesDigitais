@@ -1,4 +1,5 @@
-feevaleApp.controller('projecaoCtrl', function ($scope, $dataProvider) {
+feevaleApp.controller('projecaoCtrl', function ($rootScope, $scope, $dataProvider) {
+    $rootScope.pagina = 'projecao';
     $scope.$watch(function() {return $scope.periodo}, function(newValue, oldValue) {
         var monthNames = [
                 "Janeiro", "Fevereiro", "Março",

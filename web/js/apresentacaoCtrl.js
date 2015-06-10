@@ -1,3 +1,3 @@
-feevaleApp.controller('apresentacaoCtrl', function ($scope) {
-    
+feevaleApp.controller('apresentacaoCtrl', function ($rootScope) {
+    $rootScope.pagina = 'apresentacao';
 });

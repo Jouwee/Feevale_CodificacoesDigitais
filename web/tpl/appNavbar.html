@@ -11,10 +11,9 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#/apresentacao">Apresentação</a></li>
-        <li><a href="#/historico">Histórico</a></li>
-        <li><a href="#/projecao">Modelo</a></li>
-        <li><a href="#/simulacao">Simulação</a></li>
+        <li ng-class="{active : pagina == 'apresentacao'}"><a href="#/apresentacao">Apresentação</a></li>
+        <li ng-class="{active : pagina == 'historico'}"><a href="#/historico">Histórico</a></li>
+        <li ng-class="{active : pagina == 'simulacao'}"><a href="#/simulacao">Simulação</a></li>
       </ul>
     </div>
   </div>

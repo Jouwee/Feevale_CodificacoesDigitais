@@ -142,9 +142,6 @@ feevaleApp.directive('appNavbar', function () {
                             startAngle: -90,
                             endAngle: 90,
                             background: {
-                                /*backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || '#EEE',
-                                 innerRadius: '60%',
-                                 outerRadius: '100%',*/
                                 shape: 'arc'
                             }
                         },
@@ -154,7 +151,6 @@ feevaleApp.directive('appNavbar', function () {
                         }
                     });
                 }
-                //console.log($('div#chart' + $scope.chartId));
                 $('div#chart' + $scope.chartId).highcharts(options);
             });
         },
@@ -202,17 +198,13 @@ feevaleApp.factory('$dataProvider', function ($http) {
         //var deviation = 0.2;
         var deviation = 0.5;
         var formula = function (x) {
-            return Math.floor(((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 2360);
+            return ((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 2360;
         };
-        return $random.getFunctionPoint(formula, mes, deviation);
+        return Math.floor($random.getFunctionPoint(formula, mes, deviation));
     };
     // Gera
     simulador.getCurvaTempoRevisaoFichas = function (pico) {
         var curva = [];
-        var base = 10;
-        var valorPico = 70;
-        
-        pico = 7;
         var soma = 0;
         
         var numeroItens = pico;
@@ -226,10 +218,8 @@ feevaleApp.factory('$dataProvider', function ($http) {
         }
         
         for(var i = 0; i < 10; i++) {
-            console.log(curva[i]);
             soma += curva[i] == undefined ? 0 : curva[i];
         }
-        console.log(soma);
         for(var i = 0; i < 10; i++) {
             curva[i] = curva[i] / soma;
         }

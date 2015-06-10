@@ -1,4 +1,5 @@
-feevaleApp.controller('simulacaoCtrl', function ($scope, $dataProvider, $simulador) {
+feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador) {
+    $rootScope.pagina = 'simulacao';
     $scope.$watch(function() {return $scope.periodo}, function(newValue, oldValue) {
         var monthNames = [
                 "Janeiro", "Fevereiro", "Março",
@@ -26,12 +27,10 @@ feevaleApp.controller('simulacaoCtrl', function ($scope, $dataProvider, $simulad
         });
         */
         $scope.relacaoRevisaoFichas = [];
-        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas(0);
+        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas(7);
         for(var i = 0; i < relacaoRevisaoFichas.length; i++) {
-            console.log(i);
             $scope.relacaoRevisaoFichas.push(['Simulação', 'Número de fichas', '%', relacaoRevisaoFichas[i]]);
         }
-       console.log($scope.relacaoRevisaoFichas );
         /*
         $scope.totalFichas = 110;
         $scope.totalFichasImplementacao = 110;
