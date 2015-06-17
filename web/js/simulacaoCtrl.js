@@ -11,6 +11,7 @@ feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador)
         var year = newValue.getFullYear();
         $scope.periodoFmt = year + "-" + pad((monthIndex + 1), 2);
         $scope.periodoExtenso = monthNames[monthIndex] + ' de ' + year;
+        $scope.horasProducaoPorFicha = $simulador.horasProducaoPorFicha;
         /*
         // Gráficos dependentes do período
         $dataProvider.readView('V_CHART_CLASSIF_INCIDENTES', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
@@ -27,10 +28,13 @@ feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador)
         });
         */
         $scope.relacaoRevisaoFichas = [];
-        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas(7);
+        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas(1);
         for(var i = 0; i < relacaoRevisaoFichas.length; i++) {
             $scope.relacaoRevisaoFichas.push(['Simulação', 'Número de fichas', '%', relacaoRevisaoFichas[i]]);
         }
+        
+        $scope.mediaRevisaoFichas = $simulador.getMediaRevisaoPorFicha($scope.relacaoRevisaoFichas);
+        
         /*
         $scope.totalFichas = 110;
         $scope.totalFichasImplementacao = 110;

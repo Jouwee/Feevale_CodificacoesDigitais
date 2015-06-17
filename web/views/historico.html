@@ -29,29 +29,27 @@
                 Informações
             </div>
             <div class="chart-stage">
+                <b>{{totalFichasIncidentes + totalFichasImplementacao}}</b> fichas produzidas<br/>
                 <b>{{totalFichasIncidentes}}</b> incidentes<br/>
                 <b>{{totalFichasImplementacao}}</b> implementações<br/>
-                <b>{{totalHoras}}</b> horas de desenvolvimento<br/>
+                <b>{{totalHorasIncidentes + totalHorasImplementacao}}</b> horas de desenvolvimento<br/>
+                <b>{{totalHorasIncidentes}}</b> horas em incidentes<br/>
+                <b>{{totalHorasImplementacao}}</b> horas em implementação<br/>
                 <b>{{mediaHorasIncidente}}</b> horas por incidente em média<br/>
+                <b>{{mediaHorasImplementacao}}</b> horas por implementação em média<br/>
             </div>
             <div class="chart-notes">
                 &nbsp;
             </div>
         </div>
     </div>
-    <div class="col-sm-4">
-        <app-chart data="totalHorasImplementacao" type="solidgauge" min="0" max="3000" title="Horas de implementação" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de implementação"></app-chart>
-    </div>
-    <div class="col-sm-4">
-        <app-chart data="totalHorasIncidentes" type="solidgauge" min="0" max="3000" title="Horas de incidentes" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de incidentes"></app-chart>
-    </div>
 </div>
 
 <div class="row">
     <div class="col-sm-6">
-        <app-chart data="relacaoRevisaoFichas" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
+        <app-chart data="relacaoRevisaoFichas" type="column" title="Relação revisão / fichas" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
     <div class="col-sm-6">
-        <app-chart data="relacaoRevisaoIncidentes" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
+        <app-chart data="relacaoRevisaoIncidentes" type="column" title="Relação revisão / incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
 </div>

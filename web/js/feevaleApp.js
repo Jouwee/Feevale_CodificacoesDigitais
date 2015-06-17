@@ -192,6 +192,7 @@ feevaleApp.factory('$dataProvider', function ($http) {
 // Gerador de dados do modelo
 .factory('$simulador', function ($random) {
     var simulador = {};
+    simulador.horasProducaoPorFicha = 8.09;
     // Gera
     simulador.getTotalHoras = function (ano, mes) {
         // O desvio padrão deveria ser 20%, mas 50% parece mais preciso
@@ -201,6 +202,16 @@ feevaleApp.factory('$dataProvider', function ($http) {
             return ((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 2360;
         };
         return Math.floor($random.getFunctionPoint(formula, mes, deviation));
+    };
+    // S
+    simulador.getMediaRevisaoPorFicha = function (curvaRevisao) {
+        var medias = [];
+        var soma = 0;
+        for (var i = 0; i < curvaRevisao.length; i++) {
+            medias[i] = simulador.horasProducaoPorFicha * curvaRevisao[i][3] * (i / 10 + 0.05);
+            soma += isNaN(medias[i]) ? 0 : medias[i];
+        }
+        return soma;
     };
     // Gera
     simulador.getCurvaTempoRevisaoFichas = function (pico) {
