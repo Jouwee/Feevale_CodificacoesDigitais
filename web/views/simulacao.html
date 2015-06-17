@@ -1,26 +1,25 @@
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <div class="chart-wrapper">
             <div class="chart-title">
                 Configuração de visão
             </div>
             <div class="chart-stage">
+                Seed: <input ng-model="random.seed" />
                 <center>
                     <datepicker ng-model="periodo" show-weeks="true" class="well well-sm" min-mode="month" datepicker-mode="'month'"></datepicker>
                     <br>
                 </center>
+                Pico: <input type="range" min="1" max="10" ng-model="pico" />
             </div>
             <div class="chart-notes">
                 Utilize as configurações acima para alterar a visão de dados
             </div>
         </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-sm-8">
         <app-chart data="incidenciaErros" type="column" title="Timeline de incidentes" x-axis="eixo X" y-axis="Horas desenvolv." notes="Horas de desenvolvimento por mês desde 2012"></app-chart>
     </div>
-</div>
-<div class="page-header">
-    <h1>{{periodoExtenso}}</h1>
 </div>
 <div class="row">
     <div class="col-sm-4">
@@ -32,7 +31,7 @@
                 <b></b> fichas produzidas<br/>
                 <b></b> incidentes<br/>
                 <b></b> implementações<br/>
-                <b></b> horas de desenvolvimento<br/>
+                <b>{{totalHorasDesenvolvimento}}</b> horas de desenvolvimento<br/>
                 <b></b> horas em incidentes<br/>
                 <b></b> horas em implementação<br/>
                 <b></b> horas por incidente em média<br/>
@@ -44,17 +43,9 @@
         </div>
     </div>
     <div class="col-sm-4">
-        <app-chart data="totalHorasImplementacao" type="solidgauge" min="0" max="3000" title="Horas de implementação" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de implementação"></app-chart>
-    </div>
-    <div class="col-sm-4">
-        <app-chart data="totalHorasIncidentes" type="solidgauge" min="0" max="3000" title="Horas de incidentes" x-axis="eixo X" y-axis="y eixo" notes="Horas em fichas de incidentes"></app-chart>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-6">
         <app-chart data="relacaoRevisaoFichas" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <app-chart data="relacaoRevisaoIncidentes" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
 </div>

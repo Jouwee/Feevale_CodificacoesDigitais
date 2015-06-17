@@ -1,17 +1,50 @@
-feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador) {
+feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador, $random) {
     $rootScope.pagina = 'simulacao';
-    $scope.$watch(function() {return $scope.periodo}, function(newValue, oldValue) {
-        var monthNames = [
-                "Janeiro", "Fevereiro", "Março",
-                "Abril", "Maio", "Junho", "Julho",
-                "Agosto", "Setembro", "Outubro",
-                "Novembro", "Dezembro"
-            ];
-        var monthIndex = newValue.getMonth();
-        var year = newValue.getFullYear();
+    $scope.$watch(function() {return $scope.periodo; }, function(newValue, oldValue) {
+        $scope.update();
+    }, false);
+    $scope.$watch(function() {return $scope.pico; }, function(newValue, oldValue) {
+        $scope.update();
+    }, false);
+    $scope.$watch(function() {return $rootScope.random.seed; }, function(newValue, oldValue) {
+        $scope.update();
+    }, false);
+    
+    // Inicializa o período
+    $scope.periodo = new Date('2015-04');
+    $scope.pico = 1;
+    $scope.update = function() {
+        
+        $random.reset();
+        
+        // Gráficos NÃO dependentes do período
+        $scope.incidenciaErros = [];
+        $scope.totalHorasDesenvolvimentoPorPeriodo = [];
+        var mes = 0;
+        var ano = 2013;
+        while(true) {
+            mes++;
+            if (mes > 12) {
+                mes = 1;
+                ano++;
+            }
+            var horas = $simulador.getTotalHoras(ano, mes);
+            $scope.totalHorasDesenvolvimentoPorPeriodo[ano + '-' + pad(mes, 2)] = horas;
+            $scope.incidenciaErros.push(['Simulação', 'Total horas', pad(mes, 2) + '-' + ano, horas]);
+            if (ano === 2015 && mes > 5) {
+                break;
+            }
+        }
+        var monthIndex = $scope.periodo.getMonth();
+        var year = $scope.periodo.getFullYear();
+        
+        
         $scope.periodoFmt = year + "-" + pad((monthIndex + 1), 2);
-        $scope.periodoExtenso = monthNames[monthIndex] + ' de ' + year;
+        $scope.periodoExtenso = $rootScope.monthNames[monthIndex] + ' de ' + year;
         $scope.horasProducaoPorFicha = $simulador.horasProducaoPorFicha;
+        
+        $scope.totalHorasDesenvolvimento = $scope.totalHorasDesenvolvimentoPorPeriodo[$scope.periodoFmt];
+        
         /*
         // Gráficos dependentes do período
         $dataProvider.readView('V_CHART_CLASSIF_INCIDENTES', 'PERIODO = \'' + $scope.periodoFmt + '\'', function(data) {
@@ -28,7 +61,7 @@ feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador)
         });
         */
         $scope.relacaoRevisaoFichas = [];
-        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas(1);
+        var relacaoRevisaoFichas = $simulador.getCurvaTempoRevisaoFichas($scope.pico);
         for(var i = 0; i < relacaoRevisaoFichas.length; i++) {
             $scope.relacaoRevisaoFichas.push(['Simulação', 'Número de fichas', '%', relacaoRevisaoFichas[i]]);
         }
@@ -46,25 +79,7 @@ feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador)
         });
         $scope.totalHoras = Math.floor(((Math.abs(Math.sin(monthIndex + 1 / 4)) * 0.6) + 0.6) * 2360);
         */
-    }, false);
-    // Gráficos NÃO dependentes do período
-    $scope.incidenciaErros = [];
-    var mes = 0;
-    var ano = 2013;
-    while(true) {
-        mes++;
-        if (mes > 12) {
-            mes = 1;
-            ano++;
-        }
-        var horas = $simulador.getTotalHoras(ano, mes);
-        $scope.incidenciaErros.push(['Simulação', 'Total horas', pad(mes, 2) + '-' + ano, horas]);
-        if (ano === 2015 && mes > 5) {
-            break;
-        }
     }
-    // Inicializa o período
-    $scope.periodo = new Date('2015-04');
 });
 
 function pad(num, size) {
