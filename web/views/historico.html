@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-sm-4">
         <div class="chart-wrapper">
             <div class="chart-title">
                 Configuração de visão
@@ -15,12 +15,9 @@
             </div>
         </div>
     </div>
-    <div class="col-sm-9">
-        <app-chart data="incidenciaErros" type="column" title="Timeline de incidentes" x-axis="eixo X" y-axis="Horas desenvolv." notes="Horas de desenvolvimento por mês desde 2012"></app-chart>
+    <div class="col-sm-8">
+        <app-chart data="incidenciaErros" type="column" title="Horas de desenvolvimento" x-axis="eixo X" y-axis="Horas desenvolv." notes="Horas de desenvolvimento por mês desde 2013"></app-chart>
     </div>
-</div>
-<div class="page-header">
-    <h1>{{periodoExtenso}}</h1>
 </div>
 <div class="row">
     <div class="col-sm-4">
@@ -43,13 +40,10 @@
             </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="col-sm-6">
-        <app-chart data="relacaoRevisaoFichas" type="column" title="Relação revisão / fichas" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
+    <div class="col-sm-4">
+        <app-chart data="relacaoRevisaoFichas" type="column" title="Relação revisão / fichas" x-axis="% de revisão" y-axis="% de fichas" notes="Percentual de fichas que se enquadram na faixa de revisão"></app-chart>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <app-chart data="relacaoRevisaoIncidentes" type="column" title="Relação revisão / incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
 </div>

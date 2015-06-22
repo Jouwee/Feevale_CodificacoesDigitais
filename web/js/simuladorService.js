@@ -25,19 +25,16 @@ angular.module('feevaleApp').factory('$simulador', function ($random, $rootScope
     simulador.getCurvaTempoRevisaoFichas = function (pico) {
         var curva = [];
         var soma = 0;
-        
         var numeroItens = pico;
         for (var i = 0; i < numeroItens; i++) {
             curva[i] = (i + 1) / numeroItens;
         }
-        
-        var numeroItens = 9 - pico;
+        var numeroItens = 10 - pico;
         for (var i = 0; i < numeroItens; i++) {
-            curva[(pico - i) + numeroItens - 1] = (i) / numeroItens;
+            curva[(pico - i) + numeroItens - 1] = (i + 1) / numeroItens;
         }
-        
         for(var i = 0; i < 10; i++) {
-            soma += curva[i] == undefined ? 0 : curva[i];
+            soma += curva[i];
         }
         for(var i = 0; i < 10; i++) {
             curva[i] = curva[i] / soma;
