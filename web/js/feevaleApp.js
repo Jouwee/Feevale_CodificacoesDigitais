@@ -5,7 +5,8 @@ var feevaleApp = angular.module('feevaleApp', ['ngRoute', 'ui.bootstrap']);
 /* ------------------------------------------------------------------------------------------------------------------ */
 feevaleApp.run(function($rootScope) {
     $rootScope.random = {};
-    $rootScope.random.seed = "Seed para números aleatórios";
+    $rootScope.random.enabled = true;
+    $rootScope.random.seed = "Seed";
     $rootScope.monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio",
                 "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 }).

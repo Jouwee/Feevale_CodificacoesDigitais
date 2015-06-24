@@ -9,6 +9,9 @@ feevaleApp.controller('simulacaoCtrl', function ($rootScope, $scope, $simulador,
     $scope.$watch(function() {return $rootScope.random.seed; }, function(newValue, oldValue) {
         $scope.update();
     }, false);
+    $scope.$watch(function() {return $rootScope.random.enabled; }, function(newValue, oldValue) {
+        $scope.update();
+    }, false);
     
     // Inicializa o período
     $scope.periodo = new Date('2015-04');

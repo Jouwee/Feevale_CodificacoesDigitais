@@ -39,6 +39,23 @@ angular.module('feevaleApp').factory('$simulador', function ($random, $rootScope
         for(var i = 0; i < 10; i++) {
             curva[i] = curva[i] / soma;
         }
+        // Desvios padrões encontrados:
+        // %       Média     DP
+        // 0 - 10 :0.29288   0.039184
+        // 10- 20 :0.24679   0.022541
+        // 20- 30 :0.12762   0.021280
+        // 30- 40 :0.10525   0.014604
+        // 40- 50 :0.09423   0.013626
+        // 50- 60 :0.06250   0.009000
+        // 60- 70 :0.04387   0.010907
+        // 70- 80 :0.01400   0.000000
+        // 80- 90 :0.01350   0.000500
+        // 90- 100:-         -
+        var desviosPadroes = [0.039184, 0.022541, 0.021280, 0.014604, 0.013626, 0.009000, 0.010907, 0.000000, 0.000500];
+        // Aplica os desvios padrões
+        for(var i = 0; i < 10; i++) {
+            curva[i] = curva[i] + $random.getDesvio(desviosPadroes[i]);
+        }
         return curva;
     };
     return simulador;
