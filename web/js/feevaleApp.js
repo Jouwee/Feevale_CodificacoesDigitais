@@ -164,23 +164,3 @@ feevaleApp.directive('appNavbar', function () {
         templateUrl: 'tpl/appChart.html'
     };
 });
-
-/* ------------------------------------------------------------------------------------------------------------------ */
-// Serviços
-/* ------------------------------------------------------------------------------------------------------------------ */
-feevaleApp.factory('$dataProvider', function ($http) {
-    var dataProviderService = {};
-    //  Lê uma view
-    dataProviderService.readView = function (viewName, where, onSuccess) {
-        $http.get('data?view=' + viewName + '&where=' + where).success(function (data) {
-            onSuccess(data);
-        });
-    };
-    //  Lê um registro
-    dataProviderService.readRecord = function (select, onSuccess) {
-        $http.get('data?query=' + select).success(function (data) {
-            onSuccess(data[0]);
-        });
-    };
-    return dataProviderService;
-});
