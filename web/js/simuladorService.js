@@ -1,13 +1,13 @@
 angular.module('feevaleApp').factory('$simulador', function ($random, $rootScope) {
     var simulador = {};
     simulador.horasProducaoPorFicha = 8.09;
+    simulador.horasProducaoPorCorrecao = 7.05;
     // Gera
     simulador.getTotalHoras = function (ano, mes) {
         // O desvio padrão deveria ser 20%, mas 50% parece mais preciso
-        //var deviation = 0.2;
         var deviation = 0.5;
         var formula = function (x) {
-            return ((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 2360;
+            return ((Math.abs(Math.sin(x / 4)) * 0.6) + 0.6) * 1300;
         };
         return Math.floor($random.getFunctionPoint(formula, mes, deviation));
     };
@@ -16,12 +16,22 @@ angular.module('feevaleApp').factory('$simulador', function ($random, $rootScope
         var medias = [];
         var soma = 0;
         for (var i = 0; i < curvaRevisao.length; i++) {
-            medias[i] = simulador.horasProducaoPorFicha * curvaRevisao[i][3] * (i / 10 + 0.05);
+            medias[i] = simulador.horasProducaoPorFicha * (i / 10 + 0.05) * curvaRevisao[i][3];
             soma += isNaN(medias[i]) ? 0 : medias[i];
         }
         return soma;
     };
-    // Gera
+    // S
+    simulador.getMediaCorrecaoPorFicha = function (curvaRevisao) {
+        var medias = [];
+        var soma = 0;
+        for (var i = 0; i < curvaRevisao.length; i++) {
+            medias[i] = simulador.horasProducaoPorCorrecao * curvaRevisao[i][3] * (i / 10 + 0.05);
+            soma += isNaN(medias[i]) ? 0 : medias[i];
+        }
+        return soma;
+    };
+    // Gera a curva do tempo de revisão
     simulador.getCurvaTempoRevisaoFichas = function (pico) {
         var curva = [];
         var soma = 0;
@@ -51,12 +61,66 @@ angular.module('feevaleApp').factory('$simulador', function ($random, $rootScope
         // 70- 80 :0.01400   0.000000
         // 80- 90 :0.01350   0.000500
         // 90- 100:-         -
-        var desviosPadroes = [0.039184, 0.022541, 0.021280, 0.014604, 0.013626, 0.009000, 0.010907, 0.000000, 0.000500];
+        var desviosPadroes = [0.039184, 0.022541, 0.021280, 0.014604, 0.013626, 0.009000, 0.010907, 0.000000, 0.000500, 0.000000];
         // Aplica os desvios padrões
         for(var i = 0; i < 10; i++) {
             curva[i] = curva[i] + $random.getDesvio(desviosPadroes[i]);
         }
         return curva;
+    };
+    // Gera a curva de tempo de correção de erros
+    simulador.getCurvaTempoCorrecaoFichas = function () {
+        // Select dos tempos médios:
+        //SELECT X, AVG(Y) FROM (
+        //  SELECT FLOOR(X / 10) AS X, AVG(Y) AS Y, PERIODO FROM (
+        //    SELECT 'SICLA' AS MODEL, 'Percentual de tempo gasto com correções' AS SERIES, RAZAO_REVISAO AS X, RAZAO_CORRECAO AS Y, PERIODO FROM (
+        //      SELECT PERIODO, REV_PROGRAMACAO / TOTPRO * 100 AS RAZAO_REVISAO, HORAS_CORRECAO / TOTPRO * 100 AS RAZAO_CORRECAO
+        //         FROM V_FICHAS
+        //         ORDER BY PERIODO, HORAS_CORRECAO
+        //      )
+        //    WHERE RAZAO_REVISAO < 100 AND
+        //          RAZAO_CORRECAO < 25 -- Outliers, < 5% dos registros
+        //    ORDER BY X
+        //  ) GROUP BY PERIODO, FLOOR(X / 10)
+        //  ORDER BY X
+        //) GROUP BY X
+        ///
+        
+        var curva = [0.24511, 0.10578, 0.04078, 0.03063, 0.02185, 0.01326, 0.01052, 0.00385, 0.00160, 0.00205];
+        
+//        var desviosPadroes = [0.039184, 0.022541, 0.021280, 0.014604, 0.013626, 0.009000, 0.010907, 0.000000, 0.000500];
+//        // Aplica os desvios padrões
+//        for(var i = 0; i < 10; i++) {
+//            curva[i] = curva[i] + $random.getDesvio(desviosPadroes[i]);
+//        }
+
+        // Aplica os desvios padrões
+        for(var i = 0; i < 10; i++) {
+            curva[i] = curva[i] + $random.getDesvio(0.002);
+        }
+        return curva;
+    };
+    // Calcula o número de horas de implementacao e correção no mes
+    simulador.getHorasImplementacaoCorrecaoMensal = function (totalHoras, curvaRevisao, curvaCorrecao, mediaImplementacao, mediaCorrecao) {
+        var horasProducao = [];
+        var totalHorasProducao = 0;
+        for (var i = 0; i < curvaRevisao.length; i++) {
+            horasProducao[i] = mediaImplementacao * curvaRevisao[i];
+            totalHorasProducao += horasProducao[i];
+        }
+        // Multiplicador de correção
+        var fatorCorrecao = 3.47;
+        var horasCorrecao = [];
+        var totalHorasCorrecao = 0;
+        for (var i = 0; i < curvaRevisao.length; i++) {
+            horasCorrecao[i] = mediaCorrecao * curvaRevisao[i] * curvaCorrecao[i] * fatorCorrecao;
+            totalHorasCorrecao += horasCorrecao[i];
+        }
+        var totalHorasCalculadas = totalHorasProducao + totalHorasCorrecao;
+        return {
+            implementacao: (totalHorasProducao / totalHorasCalculadas) * totalHoras,
+            correcao: (totalHorasCorrecao / totalHorasCalculadas) * totalHoras
+        };
     };
     return simulador;
 });

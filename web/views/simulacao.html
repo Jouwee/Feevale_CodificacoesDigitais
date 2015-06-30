@@ -28,14 +28,14 @@
                 Informações
             </div>
             <div class="chart-stage">
-                <b></b> fichas produzidas<br/>
-                <b></b> incidentes<br/>
-                <b></b> implementações<br/>
+                <b>{{numeroImplementacoes + numeroCorrecoes}}</b> fichas produzidas<br/>
+                <b>{{numeroCorrecoes}}</b> incidentes<br/>
+                <b>{{numeroImplementacoes}}</b> implementações<br/>
                 <b>{{totalHorasDesenvolvimento}}</b> horas de desenvolvimento<br/>
-                <b></b> horas em incidentes<br/>
-                <b></b> horas em implementação<br/>
-                <b></b> horas por incidente em média<br/>
-                <b>{{horasProducaoPorFicha + mediaRevisaoFichas}}</b> horas por implementação em média<br/>
+                <b>{{totalHoras.correcao}}</b> horas em incidentes<br/>
+                <b>{{totalHoras.implementacao}}</b> horas em implementação<br/>
+                <b>{{mediaCorrecaoFichas}}</b> horas por incidente em média<br/>
+                <b>{{mediaRevisaoFichas}}</b> horas por implementação em média<br/>
             </div>
             <div class="chart-notes">
                 &nbsp;
@@ -43,9 +43,9 @@
         </div>
     </div>
     <div class="col-sm-4">
-        <app-chart data="relacaoRevisaoFichas" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
+        <app-chart data="relacaoRevisaoFichas" type="column" title="Relação fichas x tempo de revisão" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
     <div class="col-sm-4">
-        <app-chart data="relacaoRevisaoIncidentes" type="column" title="Timeline de incidentes" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
+        <app-chart data="relacaoRevisaoIncidentes" type="column" title="Relação tempo gasto com correção x tempo de revisão" x-axis="% de revisão" y-axis="Incidentes" notes="asdoikqokwleqwk"></app-chart>
     </div>
 </div>
